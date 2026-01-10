@@ -36,7 +36,7 @@ export function PhoneInputGroup({
     if (!phoneValue) {
       return {
         country: europeanCountries.find(c => c.code === 'SI') || europeanCountries[24],
-        phoneNumber: ''
+        phoneNumber: '',
       }
     }
 
@@ -44,14 +44,14 @@ export function PhoneInputGroup({
       if (phoneValue.startsWith(country.dialCode)) {
         return {
           country,
-          phoneNumber: phoneValue.substring(country.dialCode.length)
+          phoneNumber: phoneValue.substring(country.dialCode.length),
         }
       }
     }
 
     return {
       country: europeanCountries.find(c => c.code === 'SI') || europeanCountries[24],
-      phoneNumber: phoneValue.replace(/^\+\d+/, '').replace(/\D/g, '')
+      phoneNumber: phoneValue.replace(/^\+\d+/, '').replace(/\D/g, ''),
     }
   }
 
@@ -92,7 +92,7 @@ export function PhoneInputGroup({
     }
   }
 
-  const handleCountryChange = (country: typeof europeanCountries[0]) => {
+  const handleCountryChange = (country: (typeof europeanCountries)[0]) => {
     setSelectedCountry(country)
     setUserManuallyChangedCountry(true)
 
@@ -108,7 +108,7 @@ export function PhoneInputGroup({
       <InputGroup>
         <InputGroupAddon>
           <DropdownMenu>
-            <DropdownMenuTrigger className={"flex"}>
+            <DropdownMenuTrigger className={'flex'}>
               <div
                 className={cn(
                   'h-full px-2 py-0.5 rounded-sm bg-muted hover:bg-muted/80 cursor-pointer inline-flex items-center',
@@ -116,7 +116,11 @@ export function PhoneInputGroup({
                 )}
                 aria-disabled={disabled}
               >
-                <CountryFlag countryCode={selectedCountry.code} title={selectedCountry.name} className="h-3.5 mr-2" />
+                <CountryFlag
+                  countryCode={selectedCountry.code}
+                  title={selectedCountry.name}
+                  className="h-3.5 mr-2"
+                />
                 <span className="text-sm font-medium">{selectedCountry.dialCode}</span>
                 <HugeiconsIcon icon={ArrowDown01Icon} className="ml-2 h-4 w-4" />
               </div>
@@ -124,13 +128,17 @@ export function PhoneInputGroup({
             <DropdownMenuContent className="w-56 p-0" align="start">
               <ScrollArea className="max-h-60">
                 <div className="p-1">
-                  {europeanCountries.map((country) => (
+                  {europeanCountries.map(country => (
                     <DropdownMenuItem
                       key={country.code}
                       onClick={() => handleCountryChange(country)}
                       className="flex items-center gap-2 hover:bg-muted cursor-pointer"
                     >
-                      <CountryFlag countryCode={country.code} title={country.name} className="w-6 h-4 mx-1" />
+                      <CountryFlag
+                        countryCode={country.code}
+                        title={country.name}
+                        className="w-6 h-4 mx-1"
+                      />
                       <div className="flex-col flex">
                         <span className="font-medium">{country.name}</span>
                         <span className="text-xs text-muted-foreground">
@@ -138,7 +146,10 @@ export function PhoneInputGroup({
                         </span>
                       </div>
                       {selectedCountry.code === country.code && (
-                        <HugeiconsIcon icon={CheckmarkBadge02Icon} className="ml-auto h-4 w-4 text-green-600" />
+                        <HugeiconsIcon
+                          icon={CheckmarkBadge02Icon}
+                          className="ml-auto h-4 w-4 text-green-600"
+                        />
                       )}
                     </DropdownMenuItem>
                   ))}
@@ -150,12 +161,10 @@ export function PhoneInputGroup({
 
         <InputGroupInput
           value={phoneNumber}
-          onChange={(e) => handlePhoneChange(e.target.value)}
+          onChange={e => handlePhoneChange(e.target.value)}
           disabled={disabled}
-          placeholder={placeholder || "Enter phone number..."}
-          className={cn(
-            'rounded-l-none flex-1 ml-1'
-          )}
+          placeholder={placeholder || 'Enter phone number...'}
+          className={cn('rounded-l-none flex-1 ml-1')}
         />
       </InputGroup>
     </div>

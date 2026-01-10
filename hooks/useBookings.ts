@@ -17,7 +17,8 @@ export interface Booking {
 
 export const queryKeys = {
   allBookings: (status?: number) => ['allBookings', status] as const,
-  bookings: (startDate: string, endDate: string, status?: number) => ['bookings', startDate, endDate, status] as const,
+  bookings: (startDate: string, endDate: string, status?: number) =>
+    ['bookings', startDate, endDate, status] as const,
 }
 
 export const useAllBookings = (status?: number, enabled = true) => {
@@ -29,7 +30,7 @@ export const useAllBookings = (status?: number, enabled = true) => {
         throw new Error('No token found')
       }
 
-      const response = await api.bookings.getAll(status) as {
+      const response = (await api.bookings.getAll(status)) as {
         data: Booking[]
       }
       return response.data
@@ -41,7 +42,12 @@ export const useAllBookings = (status?: number, enabled = true) => {
   })
 }
 
-export const useBookings = (startDate: string, endDate: string, status?: number, enabled = true) => {
+export const useBookings = (
+  startDate: string,
+  endDate: string,
+  status?: number,
+  enabled = true
+) => {
   return useQuery({
     queryKey: queryKeys.bookings(startDate, endDate, status),
     queryFn: async () => {
@@ -50,7 +56,7 @@ export const useBookings = (startDate: string, endDate: string, status?: number,
         throw new Error('No token found')
       }
 
-      const response = await api.bookings.get(startDate, endDate, status) as {
+      const response = (await api.bookings.get(startDate, endDate, status)) as {
         data: Booking[]
       }
       return response.data

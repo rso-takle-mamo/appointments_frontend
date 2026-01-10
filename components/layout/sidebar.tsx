@@ -1,14 +1,24 @@
-"use client"
+'use client'
 
-import React from "react"
+import React from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { CalendarIcon, CloudIcon, NewOfficeIcon, SearchAddIcon, TaskDaily02Icon, Calendar03Icon, Tag01Icon, MenuRestaurantIcon, TimeScheduleIcon } from '@hugeicons/core-free-icons'
+import {
+  CalendarIcon,
+  CloudIcon,
+  NewOfficeIcon,
+  SearchAddIcon,
+  TaskDaily02Icon,
+  Calendar03Icon,
+  Tag01Icon,
+  MenuRestaurantIcon,
+  TimeScheduleIcon,
+} from '@hugeicons/core-free-icons'
 import { Calendar } from '@/components/ui/calendar'
-import { Badge } from "../ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from '../ui/badge'
+import { Button } from '@/components/ui/button'
 
 type LinkItem = {
   href: string
@@ -34,40 +44,40 @@ export function Sidebar() {
   const links: LinksByRole = {
     Provider: [
       {
-        name: "Company",
+        name: 'Company',
         links: [],
       },
       {
-        name: "Appointments",
+        name: 'Appointments',
         links: [
-          { href: "/bookings", label: "Bookings", icon: TaskDaily02Icon },
-          { href: "/calendar", label: "Calendar", icon: Calendar03Icon },
+          { href: '/bookings', label: 'Bookings', icon: TaskDaily02Icon },
+          { href: '/calendar', label: 'Calendar', icon: Calendar03Icon },
         ],
       },
       {
-        name: "Configuration",
+        name: 'Configuration',
         links: [
-          { href: "/categories", label: "Categories", icon: Tag01Icon },
-          { href: "/services", label: "Services", icon: MenuRestaurantIcon },
-          { href: "/schedule", label: "Schedule", icon: TimeScheduleIcon },
+          { href: '/categories', label: 'Categories', icon: Tag01Icon },
+          { href: '/services', label: 'Services', icon: MenuRestaurantIcon },
+          { href: '/schedule', label: 'Schedule', icon: TimeScheduleIcon },
         ],
       },
     ],
     Customer: [
       {
-        name: "Bookings",
+        name: 'Bookings',
         links: [
-          { href: "/tenants", label: "Search Tenants", icon: NewOfficeIcon },
-          { href: "/services", label: "Find services", icon: CalendarIcon },
+          { href: '/tenants', label: 'Search Tenants', icon: NewOfficeIcon },
+          { href: '/services', label: 'Find services', icon: CalendarIcon },
         ],
       },
       {
-        name: "Appointments",
+        name: 'Appointments',
         links: [
-          { href: "/bookings", label: "Bookings", icon: TaskDaily02Icon },
-          { href: "/calendar", label: "Calendar", icon: Calendar03Icon },
+          { href: '/bookings', label: 'Bookings', icon: TaskDaily02Icon },
+          { href: '/calendar', label: 'Calendar', icon: Calendar03Icon },
         ],
-      }
+      },
     ],
   }
 
@@ -86,22 +96,27 @@ export function Sidebar() {
         </div>
         <div className="flex gap-2 items-center">
           <span className="text-xs text-gray-500">Account:</span>
-          <Badge variant={"outline"} className="h-5">{user?.role}</Badge>
+          <Badge variant={'outline'} className="h-5">
+            {user?.role}
+          </Badge>
         </div>
       </div>
 
       <nav className="flex flex-col gap-6">
-        {userLinkGroups.map((group) => (
+        {userLinkGroups.map(group => (
           <div key={group.name} className="flex flex-col gap-3">
             <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
               {group.name}
             </span>
-            {group.name == "Company" && tenant && (
+            {group.name == 'Company' && tenant && (
               <div className="flex flex-col items-start text-sm">
-                <span className="font-semibold text-[14px] mb-1 text-gray-900">{tenant.businessName}</span>
+                <span className="font-semibold text-[14px] mb-1 text-gray-900">
+                  {tenant.businessName}
+                </span>
                 <span className=" text-[12px] text-gray-500 ">VAT: {tenant.vatNumber}</span>
-                <Button variant={"link"} className="hover:cursor-pointer px-0">
-                  <span>View more info</span><HugeiconsIcon icon={SearchAddIcon} className="inline-block" />
+                <Button variant={'link'} className="hover:cursor-pointer px-0">
+                  <span>View more info</span>
+                  <HugeiconsIcon icon={SearchAddIcon} className="inline-block" />
                 </Button>
               </div>
             )}
@@ -110,9 +125,10 @@ export function Sidebar() {
                 key={href}
                 href={href}
                 className={`flex items-center gap-2 font-medium text-[15px] no-underline transition-colors
-                  ${pathname === href
-                    ? 'text-primary font-semibold'
-                    : 'text-gray-800 hover:text-primary'
+                  ${
+                    pathname === href
+                      ? 'text-primary font-semibold'
+                      : 'text-gray-800 hover:text-primary'
                   }`}
               >
                 <HugeiconsIcon icon={icon} className="w-5 h-5" />

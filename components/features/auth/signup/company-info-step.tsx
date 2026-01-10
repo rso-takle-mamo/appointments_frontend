@@ -73,7 +73,6 @@ export function CompanyInfoStep({
     console.log('VAT validation response:', data)
     setVatValidationError(null)
     if (data.isValid) {
-
       if (data.companyName) {
         setValue('companyName', data.companyName, { shouldValidate: true })
       }
@@ -82,7 +81,6 @@ export function CompanyInfoStep({
       }
       setVatValidated(true)
       trigger()
-
     } else {
       const errorMessage = data.error || 'Invalid VAT number'
       setError('vatNumber', { message: errorMessage })
@@ -101,7 +99,6 @@ export function CompanyInfoStep({
   const handleVatCountryChange = (countryCode: string) => {
     setVatCountryCode(countryCode)
   }
-
 
   useEffect(() => {
     return () => {
@@ -125,10 +122,13 @@ export function CompanyInfoStep({
       const countryCode = value.substring(0, 2).toUpperCase()
       if (validateVATFormat(countryCode, value)) {
         debounceTimerRef.current = setTimeout(() => {
-          validateVatMutation.mutate({ vatNumber: value }, {
-            onSuccess: handleVatValidationSuccess,
-            onError: handleVatValidationError,
-          })
+          validateVatMutation.mutate(
+            { vatNumber: value },
+            {
+              onSuccess: handleVatValidationSuccess,
+              onError: handleVatValidationError,
+            }
+          )
         }, 1000) as any
       }
     }
@@ -137,15 +137,18 @@ export function CompanyInfoStep({
   const handleManualVatValidation = () => {
     const vatNumber = getValues('vatNumber')
     if (vatNumber) {
-      validateVatMutation.mutate({ vatNumber }, {
-        onSuccess: handleVatValidationSuccess,
-        onError: handleVatValidationError,
-      })
+      validateVatMutation.mutate(
+        { vatNumber },
+        {
+          onSuccess: handleVatValidationSuccess,
+          onError: handleVatValidationError,
+        }
+      )
     }
   }
 
   const onSubmit = (data: CompanyInfoFormData) => {
-    trigger().then((isFormValid) => {
+    trigger().then(isFormValid => {
       if (!isFormValid) {
         return
       }
@@ -168,7 +171,7 @@ export function CompanyInfoStep({
           <FieldLabel htmlFor="vatNumber">Company VAT Number *</FieldLabel>
           <VatInputGroup
             value={watch('vatNumber')}
-            onChange={(value) => {
+            onChange={value => {
               setValue('vatNumber', value, { shouldValidate: true })
               handleVatNumberChange(value)
             }}
@@ -191,9 +194,7 @@ export function CompanyInfoStep({
             disabled={true}
           />
           {errors.companyName && (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.companyName.message}
-            </p>
+            <p className="text-sm text-red-500 mt-1">{errors.companyName.message}</p>
           )}
         </Field>
 
@@ -207,9 +208,7 @@ export function CompanyInfoStep({
             disabled={true}
           />
           {errors.companyAddress && (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.companyAddress.message}
-            </p>
+            <p className="text-sm text-red-500 mt-1">{errors.companyAddress.message}</p>
           )}
         </Field>
 
@@ -218,14 +217,12 @@ export function CompanyInfoStep({
             <FieldLabel htmlFor="businessPhone">Business Phone (Optional)</FieldLabel>
             <PhoneInputGroup
               value={watch('businessPhone') || ''}
-              onChange={(value) => setValue('businessPhone', value, { shouldValidate: true })}
+              onChange={value => setValue('businessPhone', value, { shouldValidate: true })}
               disabled={isLoading}
               vatCountryCode={vatCountryCode}
             />
             {errors.businessPhone && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.businessPhone.message}
-              </p>
+              <p className="text-sm text-red-500 mt-1">{errors.businessPhone.message}</p>
             )}
           </Field>
 
@@ -239,9 +236,7 @@ export function CompanyInfoStep({
               disabled={isLoading}
             />
             {errors.businessEmail && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.businessEmail.message}
-              </p>
+              <p className="text-sm text-red-500 mt-1">{errors.businessEmail.message}</p>
             )}
           </Field>
         </div>
@@ -251,15 +246,13 @@ export function CompanyInfoStep({
           <Textarea
             id="description"
             placeholder="Brief description of your business..."
-            className='max-h-40'
+            className="max-h-40"
             {...register('description')}
             disabled={isLoading}
           />
-          
+
           {errors.description && (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.description.message}
-            </p>
+            <p className="text-sm text-red-500 mt-1">{errors.description.message}</p>
           )}
         </Field>
       </FieldGroup>

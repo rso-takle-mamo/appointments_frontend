@@ -13,11 +13,15 @@ import { useRegisterProviderMutation } from '@/hooks/useAuthMutation'
 import { useAuth } from '@/hooks/useAuth'
 import type { CompanyInfoFormData } from './validation/company-info.schema'
 import type { AccountInfoFullData } from './validation/account-info-full.schema'
-import { UserAccountIcon, OfficeIcon, ArrowUpRight01Icon, ArrowLeft02Icon  } from '@hugeicons/core-free-icons'
+import {
+  UserAccountIcon,
+  OfficeIcon,
+  ArrowUpRight01Icon,
+  ArrowLeft02Icon,
+} from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ROLE_BASED_REDIRECTS } from '@/constants/routes'
 import { LoadingSpinner } from '@/components/ui/spinner'
-
 
 type UserRole = 'customer' | 'provider'
 
@@ -98,38 +102,43 @@ export function UnifiedSignupForm({ type }: UnifiedSignupFormProps) {
   }
 
   const handleSubmitAccountInfo = async (data: AccountInfoFullData) => {
-      if (isProvider) {
-        if (!formData.companyInfo) {
-          throw new Error('Company information is required for provider registration')
-        }
-
-        const providerData = {
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-          username: data.username,
-          password: data.password,
-          vatNumber: formData.companyInfo.vatNumber,
-          businessName: formData.companyInfo.companyName,
-          address: formData.companyInfo.companyAddress,
-          ...(formData.companyInfo.businessPhone?.trim() && { businessPhone: formData.companyInfo.businessPhone }),
-          ...(formData.companyInfo.businessEmail?.trim() && { businessEmail: formData.companyInfo.businessEmail }),
-          ...(formData.companyInfo.description?.trim() && { description: formData.companyInfo.description }),
-        }
-
-        await registerProviderMutation.mutateAsync(providerData)
-      } else {
-        const customerData = {
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-          username: data.username,
-          password: data.password,
-        }
-
-        await registerCustomerMutation.mutateAsync(customerData)
+    if (isProvider) {
+      if (!formData.companyInfo) {
+        throw new Error('Company information is required for provider registration')
       }
-    
+
+      const providerData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        username: data.username,
+        password: data.password,
+        vatNumber: formData.companyInfo.vatNumber,
+        businessName: formData.companyInfo.companyName,
+        address: formData.companyInfo.companyAddress,
+        ...(formData.companyInfo.businessPhone?.trim() && {
+          businessPhone: formData.companyInfo.businessPhone,
+        }),
+        ...(formData.companyInfo.businessEmail?.trim() && {
+          businessEmail: formData.companyInfo.businessEmail,
+        }),
+        ...(formData.companyInfo.description?.trim() && {
+          description: formData.companyInfo.description,
+        }),
+      }
+
+      await registerProviderMutation.mutateAsync(providerData)
+    } else {
+      const customerData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        username: data.username,
+        password: data.password,
+      }
+
+      await registerCustomerMutation.mutateAsync(customerData)
+    }
   }
 
   const handlePrevious = () => {
@@ -168,18 +177,21 @@ export function UnifiedSignupForm({ type }: UnifiedSignupFormProps) {
           currentStep={currentStep + 1}
           totalSteps={totalSteps}
           stepLabel={getStepLabel()}
-          leftAction={isProvider && currentStep > 0 && (
-            <Button
-              type="button"
-              variant="outline"
-              className={"hover:cursor-pointer"}
-              onClick={handlePrevious}
-              disabled={isLoading}
-            >
-              <HugeiconsIcon icon={ArrowLeft02Icon} className=" h-4 w-4" />
-              Previous step
-            </Button>
-          )}
+          leftAction={
+            isProvider &&
+            currentStep > 0 && (
+              <Button
+                type="button"
+                variant="outline"
+                className={'hover:cursor-pointer'}
+                onClick={handlePrevious}
+                disabled={isLoading}
+              >
+                <HugeiconsIcon icon={ArrowLeft02Icon} className=" h-4 w-4" />
+                Previous step
+              </Button>
+            )
+          }
         />
 
         {isProvider && currentStep === 0 && (
@@ -201,12 +213,12 @@ export function UnifiedSignupForm({ type }: UnifiedSignupFormProps) {
           />
         )}
 
-          <div className="text-center text-sm text-muted-foreground">
-            Already have an account?{' '}
-            <Link href="/login" className="text-primary font-semibold hover:underline">
-              Log in
-            </Link>
-          </div>
+        <div className="text-center text-sm text-muted-foreground">
+          Already have an account?{' '}
+          <Link href="/login" className="text-primary font-semibold hover:underline">
+            Log in
+          </Link>
+        </div>
       </CardContent>
     </Card>
   )

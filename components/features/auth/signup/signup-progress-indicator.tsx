@@ -19,9 +19,7 @@ export function SignupProgressIndicator({
   if (leftAction) {
     return (
       <div className={cn('flex items-center justify-between py-4', className)}>
-        <div className="flex items-center">
-          {leftAction}
-        </div>
+        <div className="flex items-center">{leftAction}</div>
         <span className="text-sm text-muted-foreground">
           {currentStep}/{totalSteps} ({stepLabel})
         </span>

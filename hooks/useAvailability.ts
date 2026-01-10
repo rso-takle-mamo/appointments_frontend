@@ -64,7 +64,7 @@ export const useTimeBlocks = (startDate: string, endDate: string, enabled = true
         throw new Error('No token found')
       }
 
-      const response = await api.availability.getTimeBlocks(startDate, endDate) as {
+      const response = (await api.availability.getTimeBlocks(startDate, endDate)) as {
         data: TimeBlock[]
       }
       return response.data

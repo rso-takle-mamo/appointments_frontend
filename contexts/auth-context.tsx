@@ -4,7 +4,12 @@ import React, { createContext, ReactNode, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { getToken, parseJwt, isTokenExpired } from '../utils/token'
 import { showToast } from '../utils/toast'
-import { useLoginMutation, useCurrentUser, useTenant, useLogoutMutation } from '@/hooks/useAuthMutation'
+import {
+  useLoginMutation,
+  useCurrentUser,
+  useTenant,
+  useLogoutMutation,
+} from '@/hooks/useAuthMutation'
 
 export type UserRole = 'Customer' | 'Provider'
 
@@ -58,16 +63,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const token = getToken()
   const hasToken = !!token
 
-  const {
-    data: user,
-    error: userError,
-    isLoading: userLoading,
-  } = useCurrentUser(mounted)
+  const { data: user, error: userError, isLoading: userLoading } = useCurrentUser(mounted)
 
-  const {
-    data: tenant,
-    error: tenantError,
-  } = useTenant(user?.tenantId ?? null, mounted)
+  const { data: tenant, error: tenantError } = useTenant(user?.tenantId ?? null, mounted)
 
   const loginMutation = useLoginMutation()
   const logoutMutation = useLogoutMutation()
@@ -125,19 +123,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const isAuthenticated = !!user
 
-  const value = useMemo(() => ({
-    user: user ?? null,
-    tenant: tenant ?? null,
-    isAuthenticated,
-    isLoading: isLoading || loginMutation.isPending,
-    login,
-    logout,
-    manualLogout,
-  }), [user, tenant, isAuthenticated, isLoading, loginMutation.isPending, login, logout, manualLogout])
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user: user ?? null,
+      tenant: tenant ?? null,
+      isAuthenticated,
+      isLoading: isLoading || loginMutation.isPending,
+      login,
+      logout,
+      manualLogout,
+    }),
+    [user, tenant, isAuthenticated, isLoading, loginMutation.isPending, login, logout, manualLogout]
   )
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

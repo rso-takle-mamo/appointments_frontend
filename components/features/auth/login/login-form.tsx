@@ -17,7 +17,6 @@ import { LoadingSpinner } from '@/components/ui/spinner'
 import { UserAccountIcon, OfficeIcon, ViewIcon } from '@hugeicons/core-free-icons'
 import Link from 'next/link'
 
-
 export function LoginForm({
   onSubmit,
   isLoading,
@@ -36,13 +35,18 @@ export function LoginForm({
   })
 
   return (
-    <Card className='shadow-md'>
+    <Card className="shadow-md">
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='p-2'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="p-2">
           <FieldGroup>
             <Field>
               <FieldLabel>Username</FieldLabel>
-              <Input {...form.register('username')} id="username" type="text" placeholder="Enter your username" />
+              <Input
+                {...form.register('username')}
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+              />
               {form.formState.errors.username && (
                 <p className="text-sm text-red-500">{form.formState.errors.username.message}</p>
               )}
@@ -82,7 +86,7 @@ export function LoginForm({
                 {isLoading ? 'Loading' : 'Log in'}
                 {isLoading ? <LoadingSpinner size={12} text="" /> : null}
               </Button>
-              <FieldSeparator className='mt-0 mb-4'>Don't have an account? </FieldSeparator>
+              <FieldSeparator className="mt-0 mb-4">Don't have an account? </FieldSeparator>
 
               <div className="flex flex-row justify-between gap-4">
                 <Link
@@ -91,7 +95,7 @@ export function LoginForm({
                 >
                   <div className="flex flex-row gap-2 items-center">
                     <HugeiconsIcon icon={UserAccountIcon} color="blue" />
-                    <span className='font-medium'>New Customer</span>
+                    <span className="font-medium">New Customer</span>
                   </div>
                 </Link>
 
@@ -101,7 +105,7 @@ export function LoginForm({
                 >
                   <div className="flex flex-row gap-2 items-center">
                     <HugeiconsIcon icon={OfficeIcon} color="purple" />
-                    <span className='font-medium'>New Provider</span>
+                    <span className="font-medium">New Provider</span>
                   </div>
                 </Link>
               </div>

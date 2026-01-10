@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import React, { useEffect, useState } from "react"
-import { useAuth } from "@/hooks/useAuth"
-import { useRouter, usePathname } from "next/navigation"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { UserIcon, Logout05Icon, Settings01Icon } from "@hugeicons/core-free-icons"
+import React, { useEffect, useState } from 'react'
+import { useAuth } from '@/hooks/useAuth'
+import { useRouter, usePathname } from 'next/navigation'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { UserIcon, Logout05Icon, Settings01Icon } from '@hugeicons/core-free-icons'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,7 +12,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from '@/components/ui/breadcrumb'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,44 +20,44 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu'
 
 const routeNames: Record<string, string> = {
-  "/bookings": "Bookings",
-  "/calendar": "Calendar",
-  "/categories": "Categories",
-  "/services": "Services",
-  "/schedule": "Schedule",
-  "/tenants": "Search Tenants",
-  "/appointments": "My Appointments",
-  "/": "Home",
+  '/bookings': 'Bookings',
+  '/calendar': 'Calendar',
+  '/categories': 'Categories',
+  '/services': 'Services',
+  '/schedule': 'Schedule',
+  '/tenants': 'Search Tenants',
+  '/appointments': 'My Appointments',
+  '/': 'Home',
 }
 
 function getInitials(firstName: string | undefined, lastName: string | undefined): string {
-  const first = firstName?.charAt(0) || ""
-  const last = lastName?.charAt(0) || ""
+  const first = firstName?.charAt(0) || ''
+  const last = lastName?.charAt(0) || ''
   return `${first}${last}`.toUpperCase()
 }
 
 function getConsistentColor(email: string): string {
   const colors = [
-    "bg-red-500",
-    "bg-orange-500",
-    "bg-amber-500",
-    "bg-yellow-500",
-    "bg-lime-500",
-    "bg-green-500",
-    "bg-emerald-500",
-    "bg-teal-500",
-    "bg-cyan-500",
-    "bg-sky-500",
-    "bg-blue-500",
-    "bg-indigo-500",
-    "bg-violet-500",
-    "bg-purple-500",
-    "bg-fuchsia-500",
-    "bg-pink-500",
-    "bg-rose-500",
+    'bg-red-500',
+    'bg-orange-500',
+    'bg-amber-500',
+    'bg-yellow-500',
+    'bg-lime-500',
+    'bg-green-500',
+    'bg-emerald-500',
+    'bg-teal-500',
+    'bg-cyan-500',
+    'bg-sky-500',
+    'bg-blue-500',
+    'bg-indigo-500',
+    'bg-violet-500',
+    'bg-purple-500',
+    'bg-fuchsia-500',
+    'bg-pink-500',
+    'bg-rose-500',
   ]
   let hash = 0
   for (let i = 0; i < email.length; i++) {
@@ -95,7 +95,7 @@ export function Navbar() {
 
   const handleLogout = () => {
     logout()
-    router.push("/login")
+    router.push('/login')
   }
 
   useEffect(() => {
@@ -116,9 +116,7 @@ export function Navbar() {
                     <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
                   )}
                 </BreadcrumbItem>
-                {index < breadcrumb.length - 1 && (
-                  <BreadcrumbSeparator />
-                )}
+                {index < breadcrumb.length - 1 && <BreadcrumbSeparator />}
               </React.Fragment>
             ))}
           </BreadcrumbList>
@@ -133,28 +131,32 @@ export function Navbar() {
                 <span className="text-sm font-medium text-gray-700">
                   {user.firstName || ''} {user.lastName || ''}
                 </span>
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm ${getConsistentColor(user.email || "")}`}>
-                  {getInitials(user.firstName, user.lastName) || user.email?.charAt(0).toUpperCase()}
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm ${getConsistentColor(user.email || '')}`}
+                >
+                  {getInitials(user.firstName, user.lastName) ||
+                    user.email?.charAt(0).toUpperCase()}
                 </div>
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuGroup>
-                <div className="px-2 py-1 text-sm font-semibold text-gray-500">
-                  My Account
-                </div>
+                <div className="px-2 py-1 text-sm font-semibold text-gray-500">My Account</div>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className={"hover:cursor-pointer hover:bg-gray-100"}>
+              <DropdownMenuItem className={'hover:cursor-pointer hover:bg-gray-100'}>
                 <HugeiconsIcon icon={UserIcon} className="mr-2 h-4 w-4" />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem className={"hover:cursor-pointer hover:bg-gray-100"}>
+              <DropdownMenuItem className={'hover:cursor-pointer hover:bg-gray-100'}>
                 <HugeiconsIcon icon={Settings01Icon} className="mr-2 h-4 w-4" />
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600 focus:bg-red-50 hover:cursor-pointer hover:bg-red-50">
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="text-red-600 focus:text-red-600 focus:bg-red-50 hover:cursor-pointer hover:bg-red-50"
+              >
                 <HugeiconsIcon icon={Logout05Icon} className="mr-2 h-4 w-4 hover:text-red-600" />
                 Logout
               </DropdownMenuItem>

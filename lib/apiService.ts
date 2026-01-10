@@ -2,16 +2,9 @@ import { getToken, removeToken } from '@/utils/token'
 import { getApiBaseUrl } from '@/utils/apiUtils'
 import { showToast, toastMessages } from '@/utils/toast'
 
-
 // API functions for React Query
-export async function apiRequest<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
-
-  const url = endpoint.startsWith('http')
-    ? endpoint
-    : `${getApiBaseUrl()}${endpoint}`
+export async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  const url = endpoint.startsWith('http') ? endpoint : `${getApiBaseUrl()}${endpoint}`
 
   if (!url.startsWith('http')) {
     const error = 'Invalid API URL configuration'
@@ -47,7 +40,7 @@ export async function apiRequest<T>(
     }
   }
 
-  let responseData = await response.json()  
+  let responseData = await response.json()
 
   if (!response.ok) {
     let errorMessage: string
@@ -61,16 +54,17 @@ export async function apiRequest<T>(
         break
       case 404:
         if (endpoint.includes('/api/auth/login')) {
-          errorMessage = 'User not yet registered. Please check your username or create a new account.'
+          errorMessage =
+            'User not yet registered. Please check your username or create a new account.'
         } else {
           errorMessage = toastMessages.api.notFound
         }
         break
       case 409:
-        errorMessage = typeof responseData?.message === 'string'
-          ? responseData.message
-          : responseData?.message?.toString()
-          || 'A user with this information already exists'
+        errorMessage =
+          typeof responseData?.message === 'string'
+            ? responseData.message
+            : responseData?.message?.toString() || 'A user with this information already exists'
         break
       case 500:
       case 502:
@@ -84,7 +78,10 @@ export async function apiRequest<T>(
         } else if (typeof responseData?.error === 'string') {
           errorMessage = responseData.error
         } else if (responseData?.message && typeof responseData.message === 'object') {
-          errorMessage = responseData.message.message || responseData.message.description || JSON.stringify(responseData.message)
+          errorMessage =
+            responseData.message.message ||
+            responseData.message.description ||
+            JSON.stringify(responseData.message)
         } else {
           errorMessage = response.statusText || toastMessages.api.error
         }
@@ -165,17 +162,13 @@ export const api = {
           description: data.description,
         }),
       }),
-    getCurrentUser: () =>
-      apiRequest('/api/users/me', { method: 'GET' }),
-    logout: () =>
-      apiRequest('/api/auth/logout', { method: 'POST' }),
+    getCurrentUser: () => apiRequest('/api/users/me', { method: 'GET' }),
+    logout: () => apiRequest('/api/auth/logout', { method: 'POST' }),
   },
-
 
   // Tenant endpoints
   tenants: {
-    get: (tenantId: string) =>
-      apiRequest(`/api/tenants/${tenantId}`, { method: 'GET' }),
+    get: (tenantId: string) => apiRequest(`/api/tenants/${tenantId}`, { method: 'GET' }),
     update: (tenantId: string, data: any) =>
       apiRequest(`/api/tenants/${tenantId}`, {
         method: 'PUT',
@@ -190,12 +183,13 @@ export const api = {
 
   // Availability endpoints
   availability: {
-    getWorkingHours: () =>
-      apiRequest('/api/availability/working-hours', { method: 'GET' }),
+    getWorkingHours: () => apiRequest('/api/availability/working-hours', { method: 'GET' }),
     getTimeBlocks: (startDate: string, endDate: string) =>
-      apiRequest(`/api/availability/time-blocks?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`, { method: 'GET' }),
-    getBufferTimes: () =>
-      apiRequest('/api/availability/tenant-settings/buffer', { method: 'GET' }),
+      apiRequest(
+        `/api/availability/time-blocks?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
+        { method: 'GET' }
+      ),
+    getBufferTimes: () => apiRequest('/api/availability/tenant-settings/buffer', { method: 'GET' }),
   },
 
   // Bookings endpoints

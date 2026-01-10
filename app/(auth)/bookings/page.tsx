@@ -12,7 +12,12 @@ export default function BookingsPage() {
   const startDate = useMemo(() => format(subYears(new Date(), 5), 'yyyy-MM-dd') + 'Z', [])
   const endDate = useMemo(() => format(addYears(new Date(), 5), 'yyyy-MM-dd') + 'Z', [])
 
-  const { data: bookings, isLoading } = useBookings(startDate, endDate, undefined, user?.role === 'Provider' || user?.role === 'Customer')
+  const { data: bookings, isLoading } = useBookings(
+    startDate,
+    endDate,
+    undefined,
+    user?.role === 'Provider' || user?.role === 'Customer'
+  )
 
   const upcomingRef = useRef<HTMLDivElement>(null)
 
@@ -21,14 +26,14 @@ export default function BookingsPage() {
       return { passed: [], upcoming: [] }
     }
 
-    const sorted = [...bookings].sort((a, b) =>
-      new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime()
+    const sorted = [...bookings].sort(
+      (a, b) => new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime()
     )
 
     const passed: typeof sorted = []
     const upcoming: typeof sorted = []
 
-    sorted.forEach((booking) => {
+    sorted.forEach(booking => {
       const endDate = new Date(booking.endDateTime)
       if (isPast(endDate)) {
         passed.push(booking)
@@ -100,13 +105,11 @@ export default function BookingsPage() {
             <div className="text-base font-semibold text-gray-900 mb-1">
               {formatBookingTime(booking.startDateTime, booking.endDateTime)}
             </div>
-            {booking.notes && (
-              <div className="text-sm text-gray-500">
-                {booking.notes}
-              </div>
-            )}
+            {booking.notes && <div className="text-sm text-gray-500">{booking.notes}</div>}
           </div>
-          <span className={`px-2 py-1 rounded-full text-xs font-medium text-white shrink-0 ${getStatusColor(booking.status)}`}>
+          <span
+            className={`px-2 py-1 rounded-full text-xs font-medium text-white shrink-0 ${getStatusColor(booking.status)}`}
+          >
             {getStatusLabel(booking.status)}
           </span>
         </div>
@@ -116,7 +119,7 @@ export default function BookingsPage() {
 
   if (isLoading) {
     return (
-      <div className='w-full h-full flex justify-center items-center'>
+      <div className="w-full h-full flex justify-center items-center">
         <Spinner size={32} className="text-gray-400" />
       </div>
     )
@@ -140,7 +143,7 @@ export default function BookingsPage() {
                   Upcoming ({upcoming.length})
                 </h2>
                 <div className="space-y-3">
-                  {upcoming.map((booking) => (
+                  {upcoming.map(booking => (
                     <BookingCard key={booking.id} booking={booking} />
                   ))}
                 </div>
@@ -154,7 +157,7 @@ export default function BookingsPage() {
                   Passed ({passed.length})
                 </h2>
                 <div className="space-y-3">
-                  {passed.map((booking) => (
+                  {passed.map(booking => (
                     <BookingCard key={booking.id} booking={booking} />
                   ))}
                 </div>

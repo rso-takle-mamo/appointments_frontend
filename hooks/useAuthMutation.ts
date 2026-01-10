@@ -15,7 +15,7 @@ export const useLoginMutation = () => {
 
   return useMutation({
     mutationFn: async ({ username, password }: { username: string; password: string }) => {
-      const data = await api.auth.login(username, password) as { accessToken: string }
+      const data = (await api.auth.login(username, password)) as { accessToken: string }
       setToken(data.accessToken)
       return data
     },
@@ -32,7 +32,7 @@ export const useLoginMutation = () => {
           return userData as User
         },
       })
-    }
+    },
   })
 }
 
@@ -40,7 +40,7 @@ export const useLoginMutation = () => {
 export const useCheckVatMutation = () => {
   return useMutation({
     mutationFn: async ({ vatNumber }: { vatNumber: string }) => {
-      const response = await api.auth.checkVat(vatNumber) as {
+      const response = (await api.auth.checkVat(vatNumber)) as {
         isValid: boolean
         companyName?: string
         address?: string
@@ -56,7 +56,7 @@ export const useCheckVatMutation = () => {
 export const useCheckUsernameMutation = () => {
   return useMutation({
     mutationFn: async ({ username }: { username: string }) => {
-      const response = await api.auth.checkUsername(username) as {
+      const response = (await api.auth.checkUsername(username)) as {
         exists: boolean
       }
       return response
@@ -68,7 +68,7 @@ export const useCheckUsernameMutation = () => {
 export const useCheckEmailMutation = () => {
   return useMutation({
     mutationFn: async ({ email }: { email: string }) => {
-      const response = await api.auth.checkEmail(email) as {
+      const response = (await api.auth.checkEmail(email)) as {
         exists: boolean
       }
       return response
@@ -88,7 +88,7 @@ export const useRegisterCustomerMutation = () => {
       username: string
       password: string
     }) => {
-      const response = await api.auth.registerCustomer(data) as {
+      const response = (await api.auth.registerCustomer(data)) as {
         accessToken: string
         user: User
       }
@@ -108,7 +108,7 @@ export const useRegisterCustomerMutation = () => {
           return userData as User
         },
       })
-    }
+    },
   })
 }
 
@@ -130,7 +130,7 @@ export const useRegisterProviderMutation = () => {
       businessEmail?: string
       description?: string
     }) => {
-      const response = await api.auth.registerProvider(data) as {
+      const response = (await api.auth.registerProvider(data)) as {
         accessToken: string
       }
       setToken(response.accessToken)
@@ -149,7 +149,7 @@ export const useRegisterProviderMutation = () => {
           return userData as User
         },
       })
-    }
+    },
   })
 }
 

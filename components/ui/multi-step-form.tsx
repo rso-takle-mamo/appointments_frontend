@@ -97,7 +97,7 @@ export function MultiStepForm({
             <div
               className="h-full bg-primary transition-all duration-300"
               style={{
-                width: `${(currentStep / (steps.length - 1)) * 100}%`
+                width: `${(currentStep / (steps.length - 1)) * 100}%`,
               }}
             />
           </div>
@@ -119,8 +119,11 @@ export function MultiStepForm({
                     className={cn(
                       'relative z-10 w-10 h-10 rounded-full text-sm font-medium transition-all duration-200 flex items-center justify-center',
                       isCompleted && 'bg-primary text-primary-foreground',
-                      isActive && 'bg-primary text-primary-foreground ring-4 ring-primary/20 scale-110',
-                      !isCompleted && !isActive && 'bg-background border-2 border-muted hover:border-primary/50',
+                      isActive &&
+                        'bg-primary text-primary-foreground ring-4 ring-primary/20 scale-110',
+                      !isCompleted &&
+                        !isActive &&
+                        'bg-background border-2 border-muted hover:border-primary/50',
                       isAccessible ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'
                     )}
                   >
@@ -154,9 +157,7 @@ export function MultiStepForm({
                       {step.title}
                     </div>
                     {showStepDescriptions && step.description && (
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {step.description}
-                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">{step.description}</div>
                     )}
                   </div>
                 </div>
@@ -173,8 +174,7 @@ export function MultiStepForm({
               formData,
               updateFormData,
             })
-          : currentStepConfig.content
-        }
+          : currentStepConfig.content}
       </div>
 
       {/* Navigation Buttons */}
@@ -188,18 +188,16 @@ export function MultiStepForm({
           {previousButtonText}
         </Button>
 
-        <Button
-          type="button"
-          onClick={handleNext}
-          disabled={isLoading || isSubmitting}
-        >
+        <Button type="button" onClick={handleNext} disabled={isLoading || isSubmitting}>
           {isLoading || isSubmitting ? (
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
               <span>{isLastStep ? 'Submitting...' : 'Loading...'}</span>
             </div>
+          ) : isLastStep ? (
+            submitButtonText
           ) : (
-            isLastStep ? submitButtonText : nextButtonText
+            nextButtonText
           )}
         </Button>
       </div>
@@ -216,7 +214,7 @@ export interface StepContentProps {
 export function StepContent({
   children,
   formData,
-  updateFormData
+  updateFormData,
 }: {
   children: (props: StepContentProps) => React.ReactNode
 } & StepContentProps) {

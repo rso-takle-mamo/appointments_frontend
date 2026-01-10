@@ -2,12 +2,20 @@
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { accountInfoFullSchema, type AccountInfoFullData } from './validation/account-info-full.schema'
+import {
+  accountInfoFullSchema,
+  type AccountInfoFullData,
+} from './validation/account-info-full.schema'
 import { Field, FieldGroup, FieldLabel, Input } from '@/components/ui'
 import { Button } from '@/components/ui/button'
 import { useEffect, useState, useRef } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { ViewIcon, Loading03Icon, Alert02Icon, CheckmarkCircle02Icon } from '@hugeicons/core-free-icons'
+import {
+  ViewIcon,
+  Loading03Icon,
+  Alert02Icon,
+  CheckmarkCircle02Icon,
+} from '@hugeicons/core-free-icons'
 import {
   InputGroup,
   InputGroupButton,
@@ -34,8 +42,12 @@ export function AccountInfoStep({
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
-  const [emailStatus, setEmailStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
+  const [usernameStatus, setUsernameStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>(
+    'idle'
+  )
+  const [emailStatus, setEmailStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>(
+    'idle'
+  )
 
   const usernameDebounceRef = useRef<NodeJS.Timeout | null>(null)
   const emailDebounceRef = useRef<NodeJS.Timeout | null>(null)
@@ -123,7 +135,7 @@ export function AccountInfoStep({
 
   useEffect(() => {
     if (onDataChange) {
-      const subscription = form.watch((value) => {
+      const subscription = form.watch(value => {
         if (onDataChange) {
           onDataChange(value as Partial<AccountInfoFullData>)
         }
@@ -174,9 +186,7 @@ export function AccountInfoStep({
               disabled={isLoading}
             />
             {errors.firstName && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.firstName.message}
-              </p>
+              <p className="text-sm text-red-500 mt-1">{errors.firstName.message}</p>
             )}
           </Field>
 
@@ -190,9 +200,7 @@ export function AccountInfoStep({
               disabled={isLoading}
             />
             {errors.lastName && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.lastName.message}
-              </p>
+              <p className="text-sm text-red-500 mt-1">{errors.lastName.message}</p>
             )}
           </Field>
         </div>
@@ -205,20 +213,32 @@ export function AccountInfoStep({
               type="email"
               placeholder="Enter your email"
               {...register('email', {
-                onChange: (e) => checkEmail(e.target.value)
+                onChange: e => checkEmail(e.target.value),
               })}
               disabled={isLoading}
               className={
-                emailStatus === 'available' ? 'border-green-500' :
-                emailStatus === 'taken' ? 'border-red-500' : ''
+                emailStatus === 'available'
+                  ? 'border-green-500'
+                  : emailStatus === 'taken'
+                    ? 'border-red-500'
+                    : ''
               }
             />
-            {(emailStatus === 'available' || emailStatus === 'taken' || emailStatus === 'checking') && (
+            {(emailStatus === 'available' ||
+              emailStatus === 'taken' ||
+              emailStatus === 'checking') && (
               <InputGroupAddon align="inline-end">
                 {emailStatus === 'checking' ? (
-                  <HugeiconsIcon icon={Loading03Icon} className="h-4 w-4 text-muted-foreground animate-spin" />
+                  <HugeiconsIcon
+                    icon={Loading03Icon}
+                    className="h-4 w-4 text-muted-foreground animate-spin"
+                  />
                 ) : emailStatus === 'available' ? (
-                  <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="h-4 w-4 text-green-600" />
+                  <HugeiconsIcon
+                    icon={CheckmarkCircle02Icon}
+                    strokeWidth={2}
+                    className="h-4 w-4 text-green-600"
+                  />
                 ) : (
                   <HugeiconsIcon icon={Alert02Icon} className="h-4 w-4 text-red-500" />
                 )}
@@ -226,9 +246,7 @@ export function AccountInfoStep({
             )}
           </InputGroup>
           {errors.email ? (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.email.message}
-            </p>
+            <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
           ) : emailStatus === 'available' ? (
             <p className="text-sm text-green-600 mt-1">Email is available</p>
           ) : emailStatus === 'taken' ? (
@@ -244,20 +262,32 @@ export function AccountInfoStep({
               type="text"
               placeholder="Choose a username"
               {...register('username', {
-                onChange: (e) => checkUsername(e.target.value)
+                onChange: e => checkUsername(e.target.value),
               })}
               disabled={isLoading}
               className={
-                usernameStatus === 'available' ? 'border-green-500' :
-                usernameStatus === 'taken' ? 'border-red-500' : ''
+                usernameStatus === 'available'
+                  ? 'border-green-500'
+                  : usernameStatus === 'taken'
+                    ? 'border-red-500'
+                    : ''
               }
             />
-            {(usernameStatus === 'available' || usernameStatus === 'taken' || usernameStatus === 'checking') && (
+            {(usernameStatus === 'available' ||
+              usernameStatus === 'taken' ||
+              usernameStatus === 'checking') && (
               <InputGroupAddon align="inline-end">
                 {usernameStatus === 'checking' ? (
-                  <HugeiconsIcon icon={Loading03Icon} className="h-4 w-4 text-muted-foreground animate-spin" />
+                  <HugeiconsIcon
+                    icon={Loading03Icon}
+                    className="h-4 w-4 text-muted-foreground animate-spin"
+                  />
                 ) : usernameStatus === 'available' ? (
-                  <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className=" text-green-600" />
+                  <HugeiconsIcon
+                    icon={CheckmarkCircle02Icon}
+                    strokeWidth={2}
+                    className=" text-green-600"
+                  />
                 ) : (
                   <HugeiconsIcon icon={Alert02Icon} className="h-4 w-4 text-red-500" />
                 )}
@@ -265,9 +295,7 @@ export function AccountInfoStep({
             )}
           </InputGroup>
           {errors.username ? (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.username.message}
-            </p>
+            <p className="text-sm text-red-500 mt-1">{errors.username.message}</p>
           ) : usernameStatus === 'available' ? (
             <p className="text-sm text-green-600 mt-1">Username is available</p>
           ) : usernameStatus === 'taken' ? (
@@ -299,9 +327,7 @@ export function AccountInfoStep({
             </InputGroupAddon>
           </InputGroup>
           {errors.password && (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.password.message}
-            </p>
+            <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
           )}
         </Field>
 
@@ -329,9 +355,7 @@ export function AccountInfoStep({
             </InputGroupAddon>
           </InputGroup>
           {errors.confirmPassword && (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.confirmPassword.message}
-            </p>
+            <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>
           )}
         </Field>
       </FieldGroup>

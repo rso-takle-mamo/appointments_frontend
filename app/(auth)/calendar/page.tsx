@@ -4,7 +4,16 @@ import { useAuth } from '@/hooks/useAuth'
 import { useWorkingHours, useTimeBlocks, useBufferTimes } from '@/hooks/useAvailability'
 import { useBookings } from '@/hooks/useBookings'
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
-import { format, parse, startOfWeek, getDay, startOfMonth, endOfMonth, startOfWeek as startOfWeekFn, endOfWeek as endOfWeekFn } from 'date-fns'
+import {
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek as startOfWeekFn,
+  endOfWeek as endOfWeekFn,
+} from 'date-fns'
 import { enUS } from 'date-fns/locale/en-US'
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -150,7 +159,12 @@ export default function CalendarPage() {
 
   const { data: timeBlocks } = useTimeBlocks(startDate, endDate, user?.role === 'Provider')
 
-  const { data: bookings } = useBookings(startDate, endDate, undefined, user?.role === 'Provider' || user?.role === 'Customer')
+  const { data: bookings } = useBookings(
+    startDate,
+    endDate,
+    undefined,
+    user?.role === 'Provider' || user?.role === 'Customer'
+  )
 
   const { data: bufferTimes } = useBufferTimes(user?.role === 'Provider')
 
@@ -166,9 +180,7 @@ export default function CalendarPage() {
           <div className="space-y-1">
             {event.notes && <p className="font-medium">{event.notes}</p>}
             {!event.notes && <p className="font-medium">{event.title}</p>}
-            <p className="text-xs opacity-60">
-              {format(new Date(event.start), 'MMM d, yyyy')}
-            </p>
+            <p className="text-xs opacity-60">{format(new Date(event.start), 'MMM d, yyyy')}</p>
           </div>
         </TooltipContent>
       </Tooltip>
@@ -191,7 +203,7 @@ export default function CalendarPage() {
     let earliestStart = 24 * 60
     let latestEnd = 0
 
-    workingHours.forEach((wh) => {
+    workingHours.forEach(wh => {
       const [startHour, startMin] = wh.startTime.split(':').map(Number)
       const [endHour, endMin] = wh.endTime.split(':').map(Number)
       const startMinutes = startHour * 60 + startMin
@@ -212,62 +224,74 @@ export default function CalendarPage() {
     }
   }, [workingHours, user?.role])
 
-  const isWorkableDay = useCallback((date: Date): boolean => {
-    if (!workingHours || user?.role !== 'Provider') return true
-    const dayOfWeek = date.getDay()
-    return workingHours.some((wh) => wh.day === dayOfWeek)
-  }, [workingHours, user?.role])
+  const isWorkableDay = useCallback(
+    (date: Date): boolean => {
+      if (!workingHours || user?.role !== 'Provider') return true
+      const dayOfWeek = date.getDay()
+      return workingHours.some(wh => wh.day === dayOfWeek)
+    },
+    [workingHours, user?.role]
+  )
 
-  const isWithinWorkingHours = useCallback((date: Date): boolean => {
-    if (!workingHours || user?.role !== 'Provider') return true
-    const dayOfWeek = date.getDay()
-    const dayConfig = workingHours.find((wh) => wh.day === dayOfWeek)
+  const isWithinWorkingHours = useCallback(
+    (date: Date): boolean => {
+      if (!workingHours || user?.role !== 'Provider') return true
+      const dayOfWeek = date.getDay()
+      const dayConfig = workingHours.find(wh => wh.day === dayOfWeek)
 
-    if (!dayConfig) return false
+      if (!dayConfig) return false
 
-    const hour = date.getHours()
-    const minute = date.getMinutes()
-    const currentTime = hour * 60 + minute
+      const hour = date.getHours()
+      const minute = date.getMinutes()
+      const currentTime = hour * 60 + minute
 
-    const [startHour, startMin] = dayConfig.startTime.split(':').map(Number)
-    const [endHour, endMin] = dayConfig.endTime.split(':').map(Number)
-    const startTime = startHour * 60 + startMin
-    const endTime = endHour * 60 + endMin
+      const [startHour, startMin] = dayConfig.startTime.split(':').map(Number)
+      const [endHour, endMin] = dayConfig.endTime.split(':').map(Number)
+      const startTime = startHour * 60 + startMin
+      const endTime = endHour * 60 + endMin
 
-    return currentTime >= startTime && currentTime < endTime
-  }, [workingHours, user?.role])
+      return currentTime >= startTime && currentTime < endTime
+    },
+    [workingHours, user?.role]
+  )
 
-  const isWithinTimeBlock = useCallback((date: Date): boolean => {
-    if (!timeBlocks || !Array.isArray(timeBlocks) || timeBlocks.length === 0) return false
+  const isWithinTimeBlock = useCallback(
+    (date: Date): boolean => {
+      if (!timeBlocks || !Array.isArray(timeBlocks) || timeBlocks.length === 0) return false
 
-    return timeBlocks.some((block) => {
-      const blockStart = new Date(block.startDateTime)
-      const blockEnd = new Date(block.endDateTime)
-      return date >= blockStart && date < blockEnd
-    })
-  }, [timeBlocks])
+      return timeBlocks.some(block => {
+        const blockStart = new Date(block.startDateTime)
+        const blockEnd = new Date(block.endDateTime)
+        return date >= blockStart && date < blockEnd
+      })
+    },
+    [timeBlocks]
+  )
 
-  const isWithinBuffer = useCallback((date: Date): boolean => {
-    if (!bookings || !Array.isArray(bookings) || bookings.length === 0) return false
+  const isWithinBuffer = useCallback(
+    (date: Date): boolean => {
+      if (!bookings || !Array.isArray(bookings) || bookings.length === 0) return false
 
-    const bufferBeforeMinutes = bufferTimes?.bufferBeforeMinutes || 0
-    const bufferAfterMinutes = bufferTimes?.bufferAfterMinutes || 0
+      const bufferBeforeMinutes = bufferTimes?.bufferBeforeMinutes || 0
+      const bufferAfterMinutes = bufferTimes?.bufferAfterMinutes || 0
 
-    if (bufferBeforeMinutes === 0 && bufferAfterMinutes === 0) return false
+      if (bufferBeforeMinutes === 0 && bufferAfterMinutes === 0) return false
 
-    return bookings.some((booking) => {
-      const bookingStart = new Date(booking.startDateTime)
-      const bookingEnd = new Date(booking.endDateTime)
+      return bookings.some(booking => {
+        const bookingStart = new Date(booking.startDateTime)
+        const bookingEnd = new Date(booking.endDateTime)
 
-      const bufferBeforeStart = new Date(bookingStart.getTime() - bufferBeforeMinutes * 60 * 1000)
-      if (date >= bufferBeforeStart && date < bookingStart) return true
+        const bufferBeforeStart = new Date(bookingStart.getTime() - bufferBeforeMinutes * 60 * 1000)
+        if (date >= bufferBeforeStart && date < bookingStart) return true
 
-      const bufferAfterEnd = new Date(bookingEnd.getTime() + bufferAfterMinutes * 60 * 1000)
-      if (date >= bookingEnd && date < bufferAfterEnd) return true
+        const bufferAfterEnd = new Date(bookingEnd.getTime() + bufferAfterMinutes * 60 * 1000)
+        if (date >= bookingEnd && date < bufferAfterEnd) return true
 
-      return false
-    })
-  }, [bookings, bufferTimes])
+        return false
+      })
+    },
+    [bookings, bufferTimes]
+  )
 
   const slotPropGetter = useMemo(() => {
     return (date: Date) => {
@@ -278,7 +302,8 @@ export default function CalendarPage() {
           className: 'rbc-slot-buffer',
           style: {
             backgroundColor: 'rgba(168, 85, 247, 0.2)',
-            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(168, 85, 247, 0.1) 5px, rgba(168, 85, 247, 0.1) 10px)',
+            backgroundImage:
+              'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(168, 85, 247, 0.1) 5px, rgba(168, 85, 247, 0.1) 10px)',
           },
         }
       }
@@ -290,7 +315,8 @@ export default function CalendarPage() {
           className: 'rbc-slot-blocked',
           style: {
             backgroundColor: 'rgba(249, 115, 22, 0.2)',
-            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(249, 115, 22, 0.1) 5px, rgba(249, 115, 22, 0.1) 10px)',
+            backgroundImage:
+              'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(249, 115, 22, 0.1) 5px, rgba(249, 115, 22, 0.1) 10px)',
           },
         }
       }
@@ -303,7 +329,8 @@ export default function CalendarPage() {
             className: 'rbc-slot-free',
             style: {
               backgroundColor: 'rgba(255, 243, 200, 1)',
-              backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.05) 5px, rgba(0, 0, 0, 0.05) 10px)',
+              backgroundImage:
+                'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(0, 0, 0, 0.05) 5px, rgba(0, 0, 0, 0.05) 10px)',
             },
           }
         }
@@ -335,7 +362,7 @@ export default function CalendarPage() {
   const bookingEvents = useMemo(() => {
     if (!bookings || !Array.isArray(bookings)) return []
 
-    return bookings.map((booking) => {
+    return bookings.map(booking => {
       const start = new Date(booking.startDateTime)
       const end = new Date(booking.endDateTime)
       return {
