@@ -36,9 +36,9 @@ export function LoginForm({
   })
 
   return (
-    <Card className='shadow-lg'>
+    <Card className='shadow-md'>
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='p-4'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='p-2'>
           <FieldGroup>
             <Field>
               <FieldLabel>Username</FieldLabel>

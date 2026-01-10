@@ -187,4 +187,36 @@ export const api = {
         body: JSON.stringify(data),
       }),
   },
+
+  // Availability endpoints
+  availability: {
+    getWorkingHours: () =>
+      apiRequest('/api/availability/working-hours', { method: 'GET' }),
+    getTimeBlocks: (startDate: string, endDate: string) =>
+      apiRequest(`/api/availability/time-blocks?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`, { method: 'GET' }),
+    getBufferTimes: () =>
+      apiRequest('/api/availability/tenant-settings/buffer', { method: 'GET' }),
+  },
+
+  // Bookings endpoints
+  bookings: {
+    getAll: (status?: number) => {
+      const params = new URLSearchParams()
+      if (status !== undefined) {
+        params.append('status', status.toString())
+      }
+      const queryString = params.toString() ? `?${params.toString()}` : ''
+      return apiRequest(`/api/bookings/all${queryString}`, { method: 'GET' })
+    },
+    get: (startDate: string, endDate: string, status?: number) => {
+      const params = new URLSearchParams({
+        startDate: startDate,
+        endDate: endDate,
+      })
+      if (status !== undefined) {
+        params.append('status', status.toString())
+      }
+      return apiRequest(`/api/bookings?${params.toString()}`, { method: 'GET' })
+    },
+  },
 }

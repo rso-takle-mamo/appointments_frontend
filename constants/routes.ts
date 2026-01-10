@@ -38,8 +38,8 @@ export const getRoutePermissions = (pathname: string) => {
 }
 
 export const ROLE_BASED_REDIRECTS = {
-  Customer: '/customers',
-  Provider: '/providers',
+  Customer: '/bookings',
+  Provider: '/bookings',
 } as const
 
 export type PublicRoute = (typeof PUBLIC_ROUTES)[number]
