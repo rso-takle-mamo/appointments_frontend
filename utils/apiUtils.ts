@@ -8,22 +8,13 @@ export const getApiBaseUrl = () => {
     return ''
   }
 
-  // In production (Vercel), use relative URLs so rewrites can proxy to HTTP backend
-  if (process.env.NODE_ENV === 'production') {
-    return ''
+  if (baseUrl.startsWith('http://') || baseUrl.startsWith('https://')) {
+    return baseUrl
   }
 
-  // Remove trailing slash to avoid double slashes with endpoints that start with /
-  const cleanedUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
-
-  // In development, use the full URL
-  if (cleanedUrl.startsWith('http://') || cleanedUrl.startsWith('https://')) {
-    return cleanedUrl
+  if (baseUrl.startsWith('localhost') || baseUrl.startsWith('127.0.0.1')) {
+    return `http://${baseUrl}`
   }
 
-  if (cleanedUrl.startsWith('localhost') || cleanedUrl.startsWith('127.0.0.1')) {
-    return `http://${cleanedUrl}`
-  }
-
-  return `https://${cleanedUrl}`
+  return `https://${baseUrl}`
 }

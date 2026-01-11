@@ -4,12 +4,9 @@ import { showToast, toastMessages } from '@/utils/toast'
 
 // API functions for React Query
 export async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const baseUrl = getApiBaseUrl()
-  const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`
+  const url = endpoint.startsWith('http') ? endpoint : `${getApiBaseUrl()}${endpoint}`
 
-  // In production, relative URLs are allowed (rewritten by Next.js)
-  const isProduction = process.env.NODE_ENV === 'production'
-  if (!url.startsWith('http') && !isProduction) {
+  if (!url.startsWith('http')) {
     const error = 'Invalid API URL configuration'
     showToast.error(error)
     throw new Error(error)
