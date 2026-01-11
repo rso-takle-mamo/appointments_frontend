@@ -86,7 +86,6 @@ export const useBufferTimes = (enabled = true) => {
       }
 
       const data = await api.availability.getBufferTimes()
-      console.log('Raw buffer times API response:', data)
       return data as BufferTimes
     },
     enabled: enabled && !!getToken(),

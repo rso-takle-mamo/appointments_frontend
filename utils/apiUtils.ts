@@ -4,7 +4,6 @@ export const getApiBaseUrl = () => {
   const baseUrl = API_BASE_URL || ''
 
   if (!baseUrl) {
-    console.error('NEXT_PUBLIC_API_BASE_URL is not defined in environment variables')
     return ''
   }
 

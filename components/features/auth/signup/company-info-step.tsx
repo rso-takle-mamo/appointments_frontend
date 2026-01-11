@@ -70,7 +70,6 @@ export function CompanyInfoStep({
   const validateVatMutation = useCheckVatMutation()
 
   const handleVatValidationSuccess = (data: any) => {
-    console.log('VAT validation response:', data)
     setVatValidationError(null)
     if (data.isValid) {
       if (data.companyName) {
